@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{url}
+\usepackage[utf8]{inputenc}
+
+\title{Travail pratique \#1 - IFT-2245}
+\author{Dejla Ben Ltaief , Nezha Chahid}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Introduction}
+Ce TP  nous as permis de nous familiariser avec l'environnement de développement du système d'exploitation Linux et les outils typiquement utilisés dans ce contexte, parfaire notre connaissance de C qui est le langage de "haut niveau" le plus utilisé dans la programmation noyau, parfaire notre connaissance sur  les appels systémes des systémes d'exploitation. en implantant une ligne de commande similaire a bash qui permet de gérer un nombre de fonctionnalités tel que le démerrage des processus externes et l'expansion d'arguments.
+
+\section{Problémes rencontrés}
+
+Le plus difficile pour nous était de bien comprendre la donnée est que ce qu'il faut faire exactement ,bien comprendre tous les appels  systémes tel que  fork , dup2() , pipe ( ) et savoir les utiliser dans chaque fonctionnalité, nous familiariser avec le langage c qui est un langage dont nous n'avons pas l'habitude de l'utiliser, comprendre les commandes linux ,ainsi que l'éxecutiion d'un programme a l'aide de fichier Makefile.
+\newline Parfois il y'as des bugs qui viennent de nulle part, a chaque fois qu'on ajoute du code, nous devons réssayer toutes les fonctionnalitées, et \c{c}a nous a fait perdre beaucoup du temps , le faite de tout faire dans le main  \c{c}a nous a pas facilitée la tache non plus.
+\section{Surprises}
+Comme c'est la premiére fois que nous programmons dans le langage c et que ce langage n'as pas de garbage collector, tel que java qui est langage que nous avons utiliser le plus durant notre parcours, notre programme avait des bugs et nous avons eu des fuites de mémoire, parmi les surprises que nous avons eu aussi,si nous effectuons pas correctement la gestion des processus,nous pouvons avoir des problémes et tout notre systéme plante.
+\section{Choix faits}
+Nous avons decidé de nous documenter sur linux avant de commencer le travail demandé, puis , nous avons lu la documentation de chaque appel systéme.
+Notre ligne de commande est un simple main qui  permet de lire une ligne entrée au clavier , la découper avec strtok, puis l'analyser et finalement l'éexcuter selon le token trouvé dans la commande.
+\newline Nous avons implementé la commande "cd" qui permet de changer de répertoire.
+\newline La ligne de commande quitte quand l'utilisateur tape exit a la place d'une commande. 
+\begin{enumerate}
+\item Pour la premiére fonctionnalitalité  qui est de démarrer des processus externes,  nous avons inclut syswait.h  pour avoir waitpaid,
+puis  nous avons utilsé lappel  systéme  fork() qui nous permet de créer les processeurs,l'appel systéme waitpaid() qui suspend l?exécution du processus courant jusqu?a ce qu?un processus fils spécifié par le paramétre pid se termine . Si un processus fils correspond a pid s?est déja terminé, waitpid retourne le résultat immédiatement.  ainsi que l'appel systéme exec() qui nous permet d' éxecuter un nouveau programme.
+\item Pour la deuxiéme fonctionnalité, nous avons inclut  la bibliothéque dirent.h pour pouvoir  utiliser readdir() qui nous as permis de lister les fichiers d'une répertoire, et la fa\c{c}on dont nous avons implementé \c{c}a , c'est que a chaque fois que le token "*" apparait le code ou il y'a readdir va s'exécuter.
+\item Pour la troisiéme fonctionnalité, nous avons utilsé les appels systémes open(),close() et dup2() et nous avons geré les trois  sortes de redirections,les output ainsi que les  input ainsi que les input,output
+ \newline open() nous permet l'ouverture d'un fichiers en différents modes, \newline close() ferme un descripteur de fichier, \newline dup2() duplique un descripteur de fichier.
+\item Pour la quatriéme fonctionnalitée, nous avons utilsé les appels systémes pipe() et dup2(), l appel  a pipe crée une paire de file descriptors stockée dans fd fd[0]  sert la lecture du pipe et fd[1]  sert  l écriture dans le pipe.
+ \newline Pour implementer le cas des simples pipes, nous avons fait en sorte que le fils fait le traitement des deux commandes, et le pére ferme les descripteurs,nous avons essayer d'utiliser deux pipes pour pouvoir faire fonctionner le cas des plusieurs pipes.
+\end{enumerate}
+\section{options rejetés}
+Nous avons pas geré les autres sortes de redirections, meme si nous avons un Windows, nous avons rejeté le faite de développer notre ligne commande sous Windows avec Cygwin et nous avons preférée travailler sur le systéme linux.
+\section{Limitations du programme}
+Notre programme ne gére pas les  plusieurs pipes, meme les pipes simples il gérent pas tous les cas.
+Les redirections marchent mais il peut y avoir des bugs parfois.
+Pour l'expansion d'arguments et la simple pipe si elle sont testées en tant que premiére commande ils marchent ainsi qu'un probléme de mémoire a cause du pipe , le probléme plante a cause du pipe, les redirections input,output fonctiennent méme si il retourne un message d'erreur.
+\section{Conclusion}
+Ce tp nous as permis de découvrir le fichier Makefile, et nous l'avons trouvé intéressant, et nous espérons lutilser dans nos programmes plus tard.
+gra\c{c}e, a ce tp ,nous avons eu l'occasion de connaitre et de manipuler  les différentes appels systémes et de connaitre leurs fonctionnalitées. 
+\newline Finalement,notre ligne de commande peut  etre amélioré, en implémentant les autres commandes externesainsi qu'en corrigenat les bugs. 
+\section{Références}
+ \url{http://www.cs.loyola.edu/~jglenn/702/S2005/Examples/dup2.html}
+ \newline\url{https://openclassrooms.com/courses/parcourir-les-dossiers-avec-dirent-h}
+ \newline \url{https://github.com/elsieyoung/mini-shell/blob/master/shell.c}
+ \newline \url{https://www-apr.lip6.fr/~mine/enseignement/syst2006/minishell/}
+ \newline \url{https://www-apr.lip6.fr/~mine/enseignement/syst2006/minishell/}
+ \newline\url{http://ilay.org/yann/articles/mem/mem1.html}
+ \newline\url{https://github.com/jmreyes/simple-c-shell/blob/master/simple-c-shell.c}
+ \newline\url{http://stackoverflow.com/questions/19099663/how-to-correctly-use-fork-exec-wait}
+\end{document}
